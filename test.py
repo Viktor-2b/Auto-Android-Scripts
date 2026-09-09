@@ -1,6 +1,7 @@
-from utils import connect_device, click_and_wait
+from utils import (connect_device, restart_app, back_to_app, click_and_wait, scroll_by_ratio,
+                   APP_PACKAGES, HELLOBIKE_CLOSE_BTN)
+import time
 
+pkg = APP_PACKAGES["hellobike"]
 d = connect_device()
-click_and_wait(d, pos=(0.635, 0.359))
-click_and_wait(d, pos=(0.861, 0.318))
-click_and_wait(d, pos=(0.521, 0.933))
+click_and_wait(d, ui_obj=d(resourceId=HELLOBIKE_CLOSE_BTN))
