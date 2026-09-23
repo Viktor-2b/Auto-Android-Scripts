@@ -4,4 +4,4 @@ import time
 
 pkg = APP_PACKAGES["hellobike"]
 d = connect_device()
-click_and_wait(d, ui_obj=d(resourceId=HELLOBIKE_CLOSE_BTN))
+click_and_wait(d, pos=(0.5, 0.105))

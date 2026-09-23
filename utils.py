@@ -89,7 +89,7 @@ def click_and_wait(d, ui_obj=None, key_name=None, pos=None, timeout=2.0, post_de
     return False
 
 
-def scroll_by_ratio(d, dy_ratio=-0.66, start_x=0.5, start_y=0.75, post_delay=0.5):
+def scroll_by_ratio(d, dy_ratio=-0.25, start_x=0.5, start_y=0.75, post_delay=0.5):
     """
     根据屏幕高度比例执行竖直滑动。
     :param d: uiautomator2 设备对象

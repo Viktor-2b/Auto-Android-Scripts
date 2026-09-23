@@ -34,9 +34,11 @@ if __name__ == "__main__":
 
     sign_in(dev)
 
+    # 处理限时薅羊毛
     scroll_by_ratio(dev, dy_ratio=-0.466)
     click_and_wait(dev, ui_obj=dev(textMatches="还有.*个任务"))
-    scroll_by_ratio(dev, dy_ratio=-0.656)
+    scroll_by_ratio(dev, dy_ratio=-0.555) # 多了
+
 
     browse_weibo(dev)
 
