@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ElementTree
-from utils import connect_device
+from core import connect_device
 
 
 d = connect_device()
@@ -19,7 +19,7 @@ try:
     ui_tree_xml = d.dump_hierarchy()
 
     # 存入本地 XML 文件 (注意后缀变成了 xml)
-    with open("debug/ui_tree_dump.xml", "w", encoding="utf-8") as f:
+    with open("../debug/ui_tree_dump.xml", "w", encoding="utf-8") as f:
         f.write(ui_tree_xml)
     print("✅ 完整的 UI 树数据已保存到 ui_tree_dump.xml！")
 

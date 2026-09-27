@@ -1,8 +1,5 @@
-from utils import (connect_device, click_and_wait,
-                   APP_PACKAGES)
-from subsubtask_beetle_news import beetle_news
-
-pkg = APP_PACKAGES["hellobike"]
+from core import connect_device, click_and_wait
+from apps.hellobike.tasks.subsubtask_beetle_news import beetle_news
 
 def click(d):
     """

@@ -1,4 +1,4 @@
-from utils import connect_device
+from core import connect_device
 
 print("🔄 正在尝试连接手机读取屏幕分辨率...")
 d = connect_device()

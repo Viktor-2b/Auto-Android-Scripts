@@ -1,7 +1,7 @@
 # -*- encoding=utf8 -*-
 import time
 import uiautomator2 as u2
-from HelloBike.ad_video_loop import start_video_ad_loop
+from apps.hellobike.ad_video_loop import start_video_ad_loop
 
 package_name = "com.jingyao.easybike"
 print("正在尝试连接手机...")

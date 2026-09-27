@@ -1,36 +1,25 @@
 import time
 
-from utils import (connect_device, back_to_app, click_and_wait, scroll_by_ratio,
-                   APP_PACKAGES)
-
-pkg = APP_PACKAGES["hellobike"]
+from core import connect_device, back_to_app, click_and_wait, scroll_by_ratio
+from apps.hellobike.config import PACKAGE_NAME as pkg
 
 
 def beetle_news(d):
-    status_0 = d(textMatches=".*点击广告后开始计时.*")
     status_1 = d(textMatches=".*点击1次广告，继续倒计时.*")
     status_2 = d(textMatches=".*滑动1次页面.*")
     status_3 = d(textMatches=".*确认领取.*")
-    status_4 = d(textMatches=".*继续完成.*")
+    status_4 = d(textMatches=".*继续领取.*")
 
-    news_container = d(resourceIdMatches=".*newsContainer.*")
     btn_confirm = d(resourceId="com.beetle.app:id/btn_confirm")
     btn_continue = d(text="继续领奖")
     btn_end = d(text="开心收下")
-    btn_continue_2 = d(text="继续完成")
+    btn_continue_2 = d(text="继续领取")
 
     while True:
         try:
-            if status_0.exists:
-                print("💡 状态0：启动任务...")
-                if not click_and_wait(d, news_container):
-                    click_and_wait(d, key_name="back")
-
-            elif status_1.exists:
-                print("💡 状态1：退出后重进广告...")
-                click_and_wait(d, key_name="back")
-                if not click_and_wait(d, news_container):
-                    click_and_wait(d, key_name="back")
+            if status_1.exists:
+                print("💡 状态1：点击屏幕...")
+                click_and_wait(d, pos=(0.5, 0.106))
 
             elif status_2.exists:
                 print("💡 状态2：滑动页面...")
@@ -49,7 +38,7 @@ def beetle_news(d):
                 print("💡 状态4：重启任务...")
                 click_and_wait(d, ui_obj=btn_continue_2)
                 click_and_wait(d, pos=(0.5, 0.4))
-            time.sleep(3.0)
+            time.sleep(1.5)
 
         except Exception as e:
             # 捕获异常，防止脚本因为某个意外崩溃而停止挂机

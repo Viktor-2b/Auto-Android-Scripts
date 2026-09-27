@@ -1,8 +1,5 @@
-from utils import (connect_device, back_to_app, click_and_wait,
-                   APP_PACKAGES, HELLOBIKE_CLOSE_BTN)
-
-
-pkg = APP_PACKAGES["hellobike"]
+from core import connect_device, back_to_app, click_and_wait
+from apps.hellobike.config import PACKAGE_NAME as pkg, HELLOBIKE_CLOSE_BTN
 
 def watch_ads(d):
     """
