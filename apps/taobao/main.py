@@ -18,7 +18,6 @@ def get_taobao_gold_coins(d):
 
 
 def switch_taobao_account(d):
-    click_and_wait(d, d(description="我的淘宝"))
     click_and_wait(d, d(description="设置"))
     click_and_wait(d, d(description="切换账号"))
     click_and_wait(d, d(text="切换"))
@@ -33,53 +32,62 @@ def buy_88vip_daily_item(d):
     click_and_wait(d, pos=(0.521, 0.933))  # 先用后付
     click_and_wait(d, pos=(0.822, 0.374))  # 领淘金币
     click_and_wait(d, d(text="签到领金币"))
-    for _ in range(5):
-        click_and_wait(d, key_name="back")
+    click_and_wait(d, key_name="back", repeat_times=4)
 
-def buy_savings_card_daily_item(d, target_count=5, max_scrolls=30):
+
+def buy_savings_card_daily_item(d, target_count=5, max_scrolls=6):
     """
     淘宝省钱卡：自动寻找并集齐指定数量的商品流红包
     """
-    click_and_wait(d, d(description="省钱卡"))
+    click_and_wait(d, d(description="省钱卡"), post_delay=5.0)
+    click_and_wait(d, d(description="立即领取"))
     click_and_wait(d, d(text="点击红包解锁"))
     print(f"🚀 开始执行【寻找 {target_count} 个省钱卡红包】任务...")
     scroll_count = 0
     while scroll_count < max_scrolls:
-        # 1. 动态检测当前进度
+        # 动态检测当前进度
         progress_node = d(textMatches=r"\d/5")
         if progress_node.exists():
             curr_progress = progress_node.get_text()
             print(f"📊 当前红包收集进度: [{curr_progress}]")
             if curr_progress == f"{target_count}/5":
-                print(f"🎉 太棒了！已成功集齐 {target_count} 个红包！")
                 break
-        # 2. 检测当前屏幕是否有未点击的红包
+        # 检测当前屏幕是否有未点击的红包
         red_packet = d(resourceIdMatches=".*feeds-red-packet-task.*")
         if red_packet.exists(timeout=1.5):
-            print("🎯 发现红包图标，正在点击进入...")
+            # 底部字条会遮挡点击，需要屏蔽
+            _, center_y = red_packet.center()
+            y_ratio = center_y / d.info['displayHeight']
+            if y_ratio > 0.84:
+                scroll_by_ratio(d)
+                continue
             click_and_wait(d, red_packet)
-            print("🔙 正在返回列表...")
             click_and_wait(d, key_name="back")
             # 点完退出来后，向下滑动翻过该商品，寻找下一个
-            print("📜 翻过当前商品位...")
             scroll_by_ratio(d, dy_ratio=-0.66)
             continue
-        # 3. 当前屏幕无红包，向下翻页巡航
+        # 当前屏幕无红包，向下翻页巡航
         print(f"⏬ 当前屏无红包，向下滑动巡航 (第 {scroll_count + 1}/{max_scrolls} 次)...")
         scroll_by_ratio(d, dy_ratio=-0.66, post_delay=1.5)
         scroll_count += 1
-    # 4. 任务完成后的领取
+        # 如果没找到重进一下
+        if scroll_count >= max_scrolls:
+            click_and_wait(d, key_name="back")
+            click_and_wait(d, d(text="点击红包解锁"))
+            scroll_count=0
+    # 任务完成后的领取
     click_and_wait(d, d(text="领红包"))
     click_and_wait(d, d(text="限时领"))
     click_and_wait(d, d(text="确认领取"))
-    for _ in range(2):
-        click_and_wait(d, key_name="back")
-    # 5. 购买商品
+    click_and_wait(d, key_name="back",repeat_times=2)
+
+    # 购买商品
     click_and_wait(d, d(description="我的淘宝"))
     click_and_wait(d, d(description="收藏"))
     click_and_wait(d, pos=(0.208, 0.280))  # 收藏商品
     click_and_wait(d, d(textMatches=r".*购买.*"))
     click_and_wait(d, pos=(0.521, 0.933))  # 先用后付
+    click_and_wait(d, key_name="back", repeat_times=3)
 
 
 def run_daily(d):
