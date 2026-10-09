@@ -18,6 +18,7 @@ def get_taobao_gold_coins(d):
 
 
 def switch_taobao_account(d):
+    click_and_wait(d, d(description="我的淘宝"))
     click_and_wait(d, d(description="设置"))
     click_and_wait(d, d(description="切换账号"))
     click_and_wait(d, d(text="切换"))
@@ -46,12 +47,21 @@ def buy_savings_card_daily_item(d, target_count=5, max_scrolls=6):
     scroll_count = 0
     while scroll_count < max_scrolls:
         # 动态检测当前进度
-        progress_node = d(textMatches=r"\d/5")
+        progress_node = d(textMatches=r"\d+/\d+")
         if progress_node.exists():
             curr_progress = progress_node.get_text()
             print(f"📊 当前红包收集进度: [{curr_progress}]")
-            if curr_progress == f"{target_count}/5":
-                break
+
+            if "/" in curr_progress:
+                current_num, total_num = curr_progress.split("/")
+                # 如果集齐 8 个最终是1元红包，跳过
+                if total_num != str(target_count):
+                    click_and_wait(d, key_name="back", repeat_times=2)
+                    return
+                # 如果集齐 5/5
+                if current_num == total_num:
+                    print(f"🎉 太棒了！已成功集齐 {target_count} 个红包！")
+                    break
         # 检测当前屏幕是否有未点击的红包
         red_packet = d(resourceIdMatches=".*feeds-red-packet-task.*")
         if red_packet.exists(timeout=1.5):

@@ -40,7 +40,7 @@ def run_daily(d):
     sign_in(d)
     flashback(d, ".*百度地图.*")
     limited_ad(d)
-    # TODO 看视频
+    # TODO 看视频，任务先判断是否存在再执行
     scroll_by_ratio(d, dy_ratio=-0.5)
     click_and_wait(d, ui_obj=d(textMatches="还有.*个任务"))
 
